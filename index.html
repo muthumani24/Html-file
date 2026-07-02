@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Ticket Booking</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#111;color:#fff}
+header{background:#d32f2f;padding:18px;text-align:center}
+.container{max-width:1000px;margin:auto;padding:20px}
+.card{background:#222;padding:20px;border-radius:10px;margin-bottom:20px}
+label{display:block;margin:10px 0 5px}
+input,select{width:100%;padding:10px;border-radius:6px;border:none}
+button{margin-top:15px;padding:12px 18px;background:#e53935;color:#fff;border:none;border-radius:6px;cursor:pointer}
+button:hover{background:#b71c1c}
+.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin-top:15px}
+.seat{padding:12px;background:#444;border-radius:6px;text-align:center;cursor:pointer}
+.seat.selected{background:#4caf50}
+.seat.booked{background:#777;cursor:not-allowed}
+#summary{line-height:1.8}
+footer{text-align:center;padding:15px;color:#bbb}
+</style>
+</head>
+<body>
+<header><h1>🎬 Movie Ticket Booking</h1></header>
+<div class="container">
+<div class="card">
+<h2>Booking Details</h2>
+<label>Name</label><input id="name" placeholder="Enter your name">
+<label>Movie</label>
+<select id="movie">
+<option>Avengers</option>
+<option>Interstellar</option>
+<option>Inception</option>
+<option>Avatar</option>
+</select>
+<label>Date</label><input id="date" type="date">
+<label>Show Time</label>
+<select id="time">
+<option>10:00 AM</option>
+<option>1:00 PM</option>
+<option>4:00 PM</option>
+<option>7:30 PM</option>
+</select>
+
+<h3>Select Seats</h3>
+<div class="grid" id="seats"></div>
+<button onclick="book()">Book Tickets</button>
+</div>
+
+<div class="card">
+<h2>Booking Summary</h2>
+<div id="summary">No booking yet.</div>
+</div>
+</div>
+<footer>Sample Movie Booking UI | HTML, CSS & JavaScript</footer>
+
+<script>
+const seats=document.getElementById("seats");
+const booked=[3,9,18];
+for(let i=1;i<=32;i++){
+ const d=document.createElement("div");
+ d.className="seat";
+ d.textContent=i;
+ if(booked.includes(i)) d.classList.add("booked");
+ d.onclick=()=>{
+   if(d.classList.contains("booked")) return;
+   d.classList.toggle("selected");
+ };
+ seats.appendChild(d);
+}
+function book(){
+ const name=document.getElementById("name").value.trim();
+ const movie=document.getElementById("movie").value;
+ const date=document.getElementById("date").value;
+ const time=document.getElementById("time").value;
+ const selected=[...document.querySelectorAll(".seat.selected")].map(s=>s.textContent);
+ if(!name){alert("Please enter your name.");return;}
+ if(!date){alert("Please select a date.");return;}
+ if(selected.length===0){alert("Please select at least one seat.");return;}
+ const total=selected.length*200;
+ document.getElementById("summary").innerHTML=
+ `<b>Name:</b> ${name}<br>
+ <b>Movie:</b> ${movie}<br>
+ <b>Date:</b> ${date}<br>
+ <b>Time:</b> ${time}<br>
+ <b>Seats:</b> ${selected.join(", ")}<br>
+ <b>Ticket Price:</b> ₹200<br>
+ <b>Total:</b> ₹${total}<br><br>
+ <span style="color:#4caf50;font-weight:bold;">Booking Successful!</span>`;
+}
+</script>
+</body>
+</html>
